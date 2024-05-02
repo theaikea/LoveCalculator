@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="text-center">
-      <h1 class="text-3xl">KÆRLIGHEDSREGNEMASKINEN</h1>
+      <h1 class="text-5xl mt-36">KÆRLIGHEDSREGNEMASKINEN</h1>
       <form @submit.prevent="calculateLove" class="mt-8">
         <div class="input-container">
           <label for="yourName" class="font-bold text-xl block">DIT NAVN:</label>
@@ -11,15 +11,14 @@
           <label for="partnerName" class="font-bold text-xl block">DIT CRUSH NAVN:</label>
           <input type="text" id="partnerName" v-model="partnerName" required class="input-field mb-4">
         </div>
-        <button type="submit" class="px-10 py-4 text-xl bg-green-500 text-white rounded-lg cursor-pointer transition-colors hover:bg-green-600">UDREGN</button>
+        <button type="submit" class="px-10 py-4 text-xl bg-pink-500 text-white rounded-lg cursor-pointer transition-colors hover:bg-pink-600">UDREGN</button>
       </form>
-      <div v-if="lovePercentage !== null" class="mt-8">
-        <div class="font-bold text-2xl">{{ yourName }} og {{ partnerName }} har en kærlighedsprocent på:</div>
+      <div class="mt-8">
+        <div v-if="showLovePercentage" class="font-bold text-2xl">{{ yourName }} og {{ partnerName }} har en kærlighedsprocent på:</div>
         <div class="text-2xl">{{ lovePercentage }}%</div>
-      </div>
-      <div v-if="lovePercentage !== null" class="mt-8">
-        <div class="w-full h-16 bg-gray-300 rounded-full overflow-hidden">
-          <div :style="{ width: progressBarWidth }" class="progress-bar h-full text-xl text-white text-center bg-green-500 rounded-full">{{ lovePercentage }}%</div>
+        <div class="w-full h-16 bg-gray-300 rounded-full mt-4">
+        
+          <div :style="{ width: progressBarWidth }" class="progress-bar h-full text-xl text-white text-center bg-pink-500 rounded-full"></div>
         </div>
       </div>
     </div>
@@ -34,7 +33,8 @@ export default {
     return {
       yourName: '',
       partnerName: '',
-      lovePercentage: null
+      lovePercentage: null,
+      showLovePercentage: false
     };
   },
   computed: {
@@ -60,6 +60,7 @@ export default {
       try {
         const response = await axios.request(options);
         this.lovePercentage = response.data.percentage;
+        this.showLovePercentage = true; 
       } catch (error) {
         console.error(error);
       }
@@ -70,20 +71,22 @@ export default {
 
 <style>
 .progress-bar {
-  transition: width 0.3s ease-in-out;
+  transition: width 0.5s ease-in-out;
 }
 
 .input-container {
-  width: 500px; /* Adjust the width as per your preference */
-  margin: 0 auto 1rem; /* Center horizontally and add bottom margin */
+  width: 500px;
+  margin: 0 auto 1rem;
 }
 
 .input-field {
-  width: 100%; /* Make input fields fill their container */
-  padding: 0.75rem; /* Add padding for better appearance */
-  font-size: 1rem; /* Adjust font size if needed */
-  border: 2px solid #ccc; /* Add border */
-  border-radius: 0.5rem; /* Add border radius for rounded corners */
-  box-sizing: border-box; /* Ensure padding and border are included in width */
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
 }
+
+
 </style>
